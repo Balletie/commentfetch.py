@@ -1,0 +1,16 @@
+blockquote>p:before {
+	content: "|| ";
+}
+
+.nested {
+	margin-left: 20px;
+	border:solid 1px;
+}
+
+.md>blockquote{
+	margin-left: 15px;
+}
+
+.md>p {
+	margin-left: 10px;
+}

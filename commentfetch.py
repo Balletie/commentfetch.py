@@ -32,7 +32,7 @@ def printComment(comment, level):
 	      ', Thread link: <a href=\"',
 	      comment.submission.short_link,
 	      '\">',
-	      comment.submission.title,
+	      comment.submission.title.encode('ascii','ignore'),
 	      '</a>'
 	      '</pre>',sep='')
 	print(h.unescape(comment.body_html.encode('ascii','ignore')))	
@@ -54,12 +54,12 @@ r = praw.Reddit('commentfetcher by Skipperr')
 #printTree(comments, 0, 4)
 
 redditor = r.get_redditor("michael_dorfman")
-m_comments = redditor.get_comments(limit=None)
+m_comments = redditor.get_comments(limit=10000)
 print('<html><head><link href=\"test.css\" rel=\"stylesheet\" type=\"text/css\"/></head><body>')
 for comment in m_comments:
 	if comment.parent_id == comment.link_id:
 		print('<div class=\"root\">')
 		printComment(comment, 0)
-		printTree(comment.replies, 1, 6)
+#		printTree(comment.replies, 1, 6)
 		print('</div>')
 print('</body></html>')

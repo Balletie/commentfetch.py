@@ -13,13 +13,12 @@ def printCommentTerm(comment, level):
 	else:
 		author = comment.author.name
 	print(' |  '*level,'Username: ',author,', Score: ',`comment.score`,sep='')
-	print(' |  '*level,'Permalink: <a href=\"'+comment.permalink+'\">Link</a>',sep='')
+	print(' |  '*level,'Permalink: '+comment.permalink,sep='')
 	wrapper.initial_indent=' |  '*level + "Text:   "
 	wrapper.subsequent_indent=' |  '*(level + 2)
 	print(wrapper.fill(h.unescape(comment.body)).encode('ascii','ignore'))
 	print(wrapper.fill(comment.body.encode('ascii','ignore')))
 	print(' |  '*(level + 1))
-
 
 def printComment(comment, level):
 	if isinstance(comment.author, types.NoneType):
@@ -27,7 +26,15 @@ def printComment(comment, level):
 	else:
 		author = comment.author.name
 	print('<pre>', 'Username: ',author,', Score: ',`comment.score`,sep='')
-	print('Permalink: <a href=\"'+comment.permalink+'\">Link</a>','</pre>',sep='')
+	print('Permalink: <a href=\"',
+	      comment.permalink.encode('ascii','ignore'),
+	      '\">Link</a>',
+	      ', Thread link: <a href=\"',
+	      comment.submission.short_link,
+	      '\">',
+	      comment.submission.title,
+	      '</a>'
+	      '</pre>',sep='')
 	print(h.unescape(comment.body_html.encode('ascii','ignore')))	
 
 def printTree(commentTree, level, maxlevel=None):
@@ -51,7 +58,7 @@ m_comments = redditor.get_comments(limit=None)
 print('<html><head><link href=\"test.css\" rel=\"stylesheet\" type=\"text/css\"/></head><body>')
 for comment in m_comments:
 	if comment.parent_id == comment.link_id:
-		print('<div id=\"root\">')
+		print('<div class=\"root\">')
 		printComment(comment, 0)
 		printTree(comment.replies, 1, 6)
 		print('</div>')

@@ -1,13 +1,31 @@
-blockquote>p:before {
-	content: "|| ";
+body {
+	width:70%;
+	margin: 0 auto 30px auto;
+	border-left: solid 1px;
+	border-right:solid 1px;
+}
+
+blockquote>p {
+	border-left: solid 3px;
+	padding-left: 2px;
+	background-color: #E2E2E2;
 }
 
 .nested {
-	margin-left: 20px;
+	margin: 2px 2px 2px 20px;
 	border:solid 1px;
 }
 
-.md>blockquote{
+.root {
+	padding: 2px 0px 2px 0px;
+	border-bottom: solid 1px;
+}
+
+pre {
+	margin: 0px 0px 0px 10px;
+}
+
+.md>blockquote {
 	margin-left: 15px;
 }
 

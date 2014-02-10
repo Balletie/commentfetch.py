@@ -1,8 +1,16 @@
 body {
+	margin: 0px 0px 0px 0px;
+}
+
+body>div {
 	width:70%;
 	margin: 0 auto 30px auto;
 	border-left: solid 1px;
 	border-right:solid 1px;
+}
+
+body>a {
+	position: fixed;
 }
 
 blockquote>p {
@@ -17,12 +25,13 @@ blockquote>p {
 }
 
 .root {
-	padding: 2px 0px 2px 0px;
+	padding: 2px 0px 0px 0px;
 	border-bottom: solid 1px;
 }
 
 pre {
 	margin: 0px 0px 0px 10px;
+	overflow-x: auto;
 }
 
 .md>blockquote {

@@ -33,7 +33,8 @@ def printComment(comment, level):
 	      comment.submission.short_link,
 	      '\">',
 	      comment.submission.title.encode('ascii','ignore'),
-	      '</a>'
+	      '</a>',
+	      ', <a href=\"#\" onclick=\"return hide(this);\">Hide</a>' if level==0 else "",
 	      '</pre>',sep='')
 	print(h.unescape(comment.body_html.encode('ascii','ignore')))	
 
@@ -42,11 +43,13 @@ def printTree(commentTree, level, maxlevel=None):
 		maxlevel=10
 	if level == maxlevel:
 		return
+	print('<div class=\"allnested\">')
 	for comment in commentTree:
 		print('<div class=\"nested\">')
 		printComment(comment,level)
 		printTree(comment.replies, level + 1, maxlevel)
 		print('</div>')
+	print('</div>')
 
 r = praw.Reddit('commentfetcher by Skipperr')
 #submission = r.get_submission(submission_id='1xcy87')
@@ -55,11 +58,14 @@ r = praw.Reddit('commentfetcher by Skipperr')
 
 redditor = r.get_redditor("michael_dorfman")
 m_comments = redditor.get_comments(limit=10000)
-print('<html><head><link href=\"test.css\" rel=\"stylesheet\" type=\"text/css\"/></head><body>')
+print('<html><head>',
+      '<link href=\"stylesheet.css\" rel=\"stylesheet\" type=\"text/css\"/>',
+      '<script src=\"showhide.js\"></script>',
+      '</head><body><a onclick=\"return hideAll()\" href=\"#\">Hide All</a><div>')
 for comment in m_comments:
 	if comment.parent_id == comment.link_id:
 		print('<div class=\"root\">')
 		printComment(comment, 0)
-#		printTree(comment.replies, 1, 6)
+		printTree(comment.replies, 1, 10)
 		print('</div>')
-print('</body></html>')
+print('</div></body></html>')

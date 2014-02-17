@@ -45,7 +45,7 @@ function hide(e) {
     md.style.display = "none";
     allnested = getNextSibling(md);
     allnested.style.display = "none";
-    e.innerHTML = "Show";
+    e.innerHTML = "[+]";
     e.setAttribute("onclick", "return show(this)");
     return true
 }
@@ -56,7 +56,7 @@ function show(e) {
     md.style.display = "block";
     allnested = getNextSibling(md);
     allnested.style.display = "block";
-    e.innerHTML = "Hide";
+    e.innerHTML = "[-]";
     e.setAttribute("onclick", "return hide(this)");
     return true
 }

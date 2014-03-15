@@ -3,6 +3,7 @@ from urllib2 import HTTPError
 from collections import deque
 from math import trunc
 from time import sleep
+import getpass
 import praw
 import textwrap
 import types
@@ -10,6 +11,7 @@ from HTMLParser import HTMLParser
 
 ts1 = '1310632807' # 7/4/2011
 ts2 = '1388023200' # 12/26/2013
+offset = 8 * 60 * 60 - 1
 last_50 = deque(maxlen=50)
 user_name = 'michael_dorfman'
 subreddit_name = 'Buddhism'
@@ -65,7 +67,11 @@ def print_tree(commentTree, level, maxlevel=None):
 	print('</div>')
 
 r = praw.Reddit('commentfetcher by Skipperr')
-r.login(username='uname', password='pswd')
+
+uname = getpass.getpass("Username: ")
+pwd   = getpass.getpass("Password: ")
+
+r.login(username=uname, password=pwd)
 
 print('<html><head>',
       '<link href=\"stylesheet.css\" rel=\"stylesheet\" type=\"text/css\"/>',

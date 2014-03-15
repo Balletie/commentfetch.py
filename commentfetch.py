@@ -1,4 +1,8 @@
 from __future__ import print_function
+from urllib2 import HTTPError
+from collections import deque
+from math import trunc
+from time import sleep
 import praw
 import textwrap
 import types
@@ -76,7 +80,7 @@ while True:
 				syntax='cloudsearch', 
 				limit=None)
 	except HTTPError, e:
-		print 'Search from {0} to {1} produced error: {2}'.format(ts1, ts2, e.code)
+		print('Search from {0} to {1} produced error: {2}'.format(ts1, ts2, e.code))
 		sleep(60)
 		continue
 	for submission in results_gen:

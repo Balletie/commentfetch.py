@@ -1,13 +1,13 @@
-from __future__ import print_function
-from urllib2 import HTTPError
-from collections import deque
-from math import trunc
-from time import sleep
+from   __future__  import print_function
+from   urllib2 	   import HTTPError
+from   collections import deque
+from   math 	   import trunc
+from   time 	   import sleep
+from   HTMLParser  import HTMLParser
 import getpass
 import praw
 import textwrap
 import types
-from HTMLParser import HTMLParser
 
 ts1 = '1310632807' # 7/4/2011
 ts2 = '1388023200' # 12/26/2013
@@ -19,8 +19,32 @@ more_comments = praw.objects.MoreComments
 wrapper = textwrap.TextWrapper(width=100, break_long_words=False, replace_whitespace=False)
 h = HTMLParser()
 
+# Author: http://www.reddit.com/user/maula115
 def query_str(ts1, ts2):
 	return 'timestamp:' + ts1 + '..' + ts2
+
+# Author: http://www.reddit.com/user/maula115
+def expand_more_comments(more_comments):
+	# accepts moreComments object (1. load more comments, 2. continue this thread)
+	# returns a list of current level comments contained within
+	if more_comments.count:
+		contained_comments = more_comments.comments()
+		current_level_comments = [c for c in contained_comments if c.id in more_comments.children]
+		return current_level_comments
+	else:
+		# "continue this thread"
+		result = []
+		for child in more_comments.children:
+			submission_url = 'http://www.reddit.com/comments/' + more_comments.submission.id + '/_/' + child
+			while True:
+				try:
+					submission = r.get_submission(url=submission_url)
+					break
+				except HTTPError, e:
+					print('Getting submission at {0} produced error: {1}'.format(submission_url, e.code))
+					sleep(60)
+			result.extend(submission.comments)
+		return result
 
 def print_comment_term(comment, level):
 	if isinstance(comment.author, types.NoneType):
@@ -55,13 +79,17 @@ def print_comment(comment, level):
 
 def print_tree(commentTree, level, maxlevel=None):
 	if maxlevel == None:
-		maxlevel=10
+		maxlevel=100				#Just a sufficiently large number
 	if level == maxlevel:
 		return
 	print('<div class=\"allnested\">')
 	for comment in commentTree:
+		if isinstance(comment, more_comments):
+			print_tree(expand_more_comments(comment), level, maxlevel)
+			print('</div>')
+			return
 		print('<div class=\"nested\">')
-		print_comment(comment,level)
+		print_comment(comment, level)
 		print_tree(comment.replies, level + 1, maxlevel)
 		print('</div>')
 	print('</div>')

@@ -49,7 +49,7 @@ def print_comment(comment, level):
 	      '\">',
 	      comment.submission.title.encode('ascii','ignore'),
 	      '</a>',
-	      ', <a href=\"#\" onclick=\"return hide(this);\">[-]</a>' if level==0 else "",
+	      ', <a onclick=\"return hide(this);\">[-]</a>' if level==0 else "",
 	      '</pre>',sep='')
 	print(h.unescape(comment.body_html.encode('ascii','ignore')))	
 
@@ -76,7 +76,7 @@ r.login(username=uname, password=pwd)
 print('<html><head>',
       '<link href=\"stylesheet.css\" rel=\"stylesheet\" type=\"text/css\"/>',
       '<script src=\"showhide.js\"></script>',
-      '</head><body><a onclick=\"return hideAll()\" href=\"#\">Hide All</a><div>')
+      '</head><body><a onclick=\"return hideAll()\">Hide All</a><div>')
 while True:
 	last_created = None
 	try: 
